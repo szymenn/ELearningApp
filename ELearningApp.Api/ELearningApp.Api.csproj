@@ -5,7 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
+      <ProjectReference Include="..\ELearningApp.Core\ELearningApp.Core.csproj" />
+      <ProjectReference Include="..\ELearningApp.Infrastructure\ELearningApp.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
