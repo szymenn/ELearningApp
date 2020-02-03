@@ -7,6 +7,6 @@ namespace ELearningApp.Core.Interfaces.Services.Auth
     {
         JsonWebToken CreateAccessToken(string userName, Guid userId);
         JsonWebToken RefreshAccessToken(string token);
-        void RevokeAccessToken(string token);
+        void RevokeRefreshToken(string token);
     }
 }

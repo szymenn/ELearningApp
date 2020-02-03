@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Dtos.InputModels.Auth;
 
-namespace ELearningApp.Core.Interfaces.Repositories
+namespace ELearningApp.Core.Interfaces.Repositories.Auth
 {
     public interface IUserRepository
     {
