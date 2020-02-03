@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ELearningApp.Api.Controllers.Auth
 {
-    [ApiController, Route("auth")]
-    [Authorize]
+    [ApiController, Route("auth"), Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
