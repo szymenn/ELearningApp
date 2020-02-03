@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Dtos.InputModels.Auth;
 using ELearningApp.Core.Interfaces.Repositories;
+using ELearningApp.Core.Interfaces.Repositories.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
 
 namespace ELearningApp.Core.Services.Auth
@@ -39,7 +40,7 @@ namespace ELearningApp.Core.Services.Auth
 
         public void RevokeRefreshToken(string token)
         {
-            _tokenService.RevokeAccessToken(token);
+            _tokenService.RevokeRefreshToken(token);
         }
     }
 }
