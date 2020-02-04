@@ -9,7 +9,6 @@ namespace ELearningApp.Infrastructure.Data
         public TokenStoreDbContext(DbContextOptions<TokenStoreDbContext> options)
             : base(options)
         {
-            
         }
         
         public DbSet<RefreshToken> Tokens { get; set; }
