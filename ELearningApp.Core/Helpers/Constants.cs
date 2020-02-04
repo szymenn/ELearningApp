@@ -3,7 +3,8 @@ namespace ELearningApp.Core.Helpers
     public static class Constants
     {
         public const string NotFound = "Not Found";
-        public const string EmailSenderException =
+        public const string BadRequest = "Bad Request";
+        public const string EmailServiceException =
             "An error occured while sending confirmation email, please try again";
         public const string EmailVerificationException = "Unable to verify email";
         public const string LoginFailed =
@@ -14,6 +15,7 @@ namespace ELearningApp.Core.Helpers
         public const string RegistrationError =
             "An error occurred during registration, please make sure an email address is not already signed up";
         public const string Conflict = "Conflict";
+        public const string ApiUrl = "something";
 
     }
 }
