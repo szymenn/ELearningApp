@@ -15,7 +15,11 @@ namespace ELearningApp.Core.Helpers
         public const string RegistrationError =
             "An error occurred during registration, please make sure an email address is not already signed up";
         public const string Conflict = "Conflict";
-        public const string ApiUrl = "something";
+        public const string ApiUrl = "https://localhost:5001";
+        public const string UserStoreConnectionString = "UserStore";
+        public const string TokenStoreConnectionString = "TokenStore";
+        public const string JwtSettings = "JwtSettings";
+        public const string EmailVerificationSettings = "EmailVerificationSettings";
 
     }
 }
