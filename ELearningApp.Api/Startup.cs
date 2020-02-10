@@ -2,7 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using ELearningApp.Api.MapperConfig;
+using ELearningApp.Core.Dtos.ApiModels.Auth;
+using ELearningApp.Core.Helpers;
+using ELearningApp.Core.Interfaces.Repositories.Auth;
+using ELearningApp.Core.Interfaces.Services.Auth;
+using ELearningApp.Core.Options;
+using ELearningApp.Core.Services.Auth;
 using ELearningApp.Infrastructure.Data;
+using ELearningApp.Infrastructure.Repositories.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,9 +38,21 @@ namespace ELearningApp.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserStoreDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("UserStore")));
+                options.UseNpgsql(Configuration.GetConnectionString(Constants.UserStoreConnectionString)));
             services.AddDbContext<TokenStoreDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("TokenStore")));
+                options.UseNpgsql(Configuration.GetConnectionString(Constants.TokenStoreConnectionString)));
+            
+            var mappingConfig = new MapperConfiguration(config =>
+            {
+                config.AddProfile<MappingProfile>();
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.Configure<JwtSettings>(Configuration.GetSection(Constants.JwtSettings));
+            services.Configure<EmailVerificationSettings>(
+                Configuration.GetSection(Constants.EmailVerificationSettings));
             
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
@@ -40,6 +61,14 @@ namespace ELearningApp.Api
                 })
                 .AddEntityFrameworkStores<UserStoreDbContext>()
                 .AddDefaultTokenProviders();
+            
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IJwtHandler, JwtHandler>();
+            services.AddScoped<IRefreshTokenHandler, RefreshTokenHandler>();
             
             services.AddControllers();
         }
