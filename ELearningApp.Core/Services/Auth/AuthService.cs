@@ -4,6 +4,7 @@ using ELearningApp.Core.Dtos.InputModels.Auth;
 using ELearningApp.Core.Interfaces.Repositories;
 using ELearningApp.Core.Interfaces.Repositories.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace ELearningApp.Core.Services.Auth
 {
@@ -18,14 +19,14 @@ namespace ELearningApp.Core.Services.Auth
             _tokenService = tokenService;
         }
         
-        public async Task<JsonWebToken> Login(LoginInputModel loginModel)
+        public async Task<JsonWebToken> Login(IdentityUser user, string password)
         {
-            return await _userRepository.Login(loginModel);
+            return await _userRepository.Login(user, password);
         }
 
-        public async Task<EmailResponse> Register(RegisterInputModel registerModel)
+        public async Task<EmailResponse> Register(IdentityUser user, string password)
         {
-            return await _userRepository.Register(registerModel);
+            return await _userRepository.Register(user, password);
         }
 
         public async Task VerifyEmail(string userId, string emailToken)

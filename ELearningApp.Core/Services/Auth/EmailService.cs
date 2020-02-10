@@ -26,7 +26,7 @@ namespace ELearningApp.Core.Services.Auth
             var client = new SendGridClient(_emailSettings.Value.ApiKey);
             var from = new EmailAddress(_emailSettings.Value.FromEmail, _emailSettings.Value.FromName);
             var to = new EmailAddress(user.Email, user.Email);
-            var content = $"<a href={Constants.ApiUrl}/user/email/verify" +
+            var content = $"<a href={Constants.ApiUrl}/auth/email/verify" +
                           $"?userId={HttpUtility.UrlEncode(user?.Id)}" +
                           $"&confirmationToken={HttpUtility.UrlEncode(token)}>Verify</a>";
             var msg = MailHelper.CreateSingleEmail(
@@ -40,7 +40,6 @@ namespace ELearningApp.Core.Services.Auth
             if (response.StatusCode == System.Net.HttpStatusCode.Accepted)
             {
                 return new EmailResponse();
-
             }
             
             throw new EmailServiceException(Constants.EmailServiceException);
