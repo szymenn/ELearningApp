@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using ELearningApp.Core.Dtos.InputModels.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELearningApp.Api.Controllers.Auth
@@ -11,29 +13,33 @@ namespace ELearningApp.Api.Controllers.Auth
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
         }
 
-        [HttpPost("login")]
+        [HttpPost("users/login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginInputModel loginModel)
         {
             return Ok(new
             {
-                Tokens = await _authService.Login(loginModel)
+                Tokens = await _authService.Login
+                    (_mapper.Map<IdentityUser>(loginModel), loginModel.Password)
             });
         }
 
-        [HttpPost("register")]
+        [HttpPost("users/register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterInputModel registerModel)
         {
             return Ok(new
             {
-                Response = await _authService.Register(registerModel)
+                Response = await _authService.Register
+                    (_mapper.Map<IdentityUser>(registerModel), registerModel.Password)
             });
         }
 
@@ -59,7 +65,7 @@ namespace ELearningApp.Api.Controllers.Auth
         public async Task<IActionResult> VerifyEmail(string userId, string confirmationToken)
         {
             await _authService.VerifyEmail(userId, confirmationToken);
-            return Redirect("hetewtrete");
+            return Redirect("https://google.com");
         }
         
     }
