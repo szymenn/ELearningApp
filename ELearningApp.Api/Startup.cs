@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ELearningApp.Api.MapperConfig;
+using ELearningApp.Core.Auth.Handlers;
+using ELearningApp.Core.Auth.Requirements;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Helpers;
 using ELearningApp.Core.Interfaces.Repositories.Auth;
@@ -12,6 +14,7 @@ using ELearningApp.Core.Options;
 using ELearningApp.Core.Services.Auth;
 using ELearningApp.Infrastructure.Data;
 using ELearningApp.Infrastructure.Repositories.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -61,14 +64,25 @@ namespace ELearningApp.Api
                 })
                 .AddEntityFrameworkStores<UserStoreDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsTeacher", policy =>
+                    policy.Requirements.Add(new RoleRequirement(RoleEnum.Teacher)));
+                options.AddPolicy("IsStudent", policy => 
+                    policy.Requirements.Add(new RoleRequirement(RoleEnum.Student)));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, TeacherHandler>();
+            services.AddSingleton<IAuthorizationHandler, StudentHandler>();
             
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IJwtHandler, JwtHandler>();
-            services.AddScoped<IRefreshTokenHandler, RefreshTokenHandler>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IJwtService, JwtService>();
             
             services.AddControllers();
         }
