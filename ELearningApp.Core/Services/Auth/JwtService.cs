@@ -10,11 +10,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ELearningApp.Core.Services.Auth
 {
-    public class JwtHandler : IJwtHandler
+    public class JwtService : IJwtService
     {
         private readonly IOptions<JwtSettings> _jwtSettings;
 
-        public JwtHandler(IOptions<JwtSettings> jwtSettings)
+        public JwtService(IOptions<JwtSettings> jwtSettings)
         {
             _jwtSettings = jwtSettings;
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using ELearningApp.Core.Helpers;
 using ELearningApp.Core.Interfaces.Repositories.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -9,18 +10,18 @@ namespace ELearningApp.Core.Services.Auth
 {
     public class TokenService : ITokenService
     {
-        private readonly IJwtHandler _jwtHandler;
-        private readonly IRefreshTokenHandler _refreshTokenHandler;
+        private readonly IJwtService _jwtService;
+        private readonly IRefreshTokenService _refreshTokenService;
         private readonly ITokenRepository _tokenRepository;
 
         public TokenService(
-            IJwtHandler jwtHandler,
-            IRefreshTokenHandler refreshTokenHandler,
+            IJwtService jwtService,
+            IRefreshTokenService refreshTokenService,
             ITokenRepository tokenRepository
         )
         {
-            _jwtHandler = jwtHandler;
-            _refreshTokenHandler = refreshTokenHandler;
+            _jwtService = jwtService;
+            _refreshTokenService = refreshTokenService;
             _tokenRepository = tokenRepository;
         }
         
@@ -35,8 +36,8 @@ namespace ELearningApp.Core.Services.Auth
 
             return new JsonWebToken
             {
-                AccessToken = _jwtHandler.CreateAccessToken(claims),
-                RefreshToken = _refreshTokenHandler.CreateRefreshToken(userName, userId),
+                AccessToken = _jwtService.CreateAccessToken(claims),
+                RefreshToken = _refreshTokenService.CreateRefreshToken(userName, userId),
             };
         }
 
@@ -44,8 +45,8 @@ namespace ELearningApp.Core.Services.Auth
         {
             var userClaims = _tokenRepository.GetUserClaims(token);
 
-            var refreshToken = _refreshTokenHandler.UpdateRefreshToken(token);
-            var accessToken = _jwtHandler.CreateAccessToken(userClaims);
+            var refreshToken = _refreshTokenService.UpdateRefreshToken(token);
+            var accessToken = _jwtService.CreateAccessToken(userClaims);
             return new JsonWebToken
             {
                 AccessToken = accessToken,

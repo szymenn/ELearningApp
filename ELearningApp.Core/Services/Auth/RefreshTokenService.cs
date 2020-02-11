@@ -7,11 +7,11 @@ using ELearningApp.Core.Interfaces.Services.Auth;
 
 namespace ELearningApp.Core.Services.Auth
 {
-    public class RefreshTokenHandler : IRefreshTokenHandler
+    public class RefreshTokenService : IRefreshTokenService
     {
         private readonly ITokenRepository _tokenRepository;
 
-        public RefreshTokenHandler(ITokenRepository tokenRepository)
+        public RefreshTokenService(ITokenRepository tokenRepository)
         {
             _tokenRepository = tokenRepository;
         }
