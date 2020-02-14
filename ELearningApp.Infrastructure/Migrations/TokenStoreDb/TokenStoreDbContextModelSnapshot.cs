@@ -28,8 +28,8 @@ namespace ELearningApp.Infrastructure.Migrations.TokenStoreDb
                     b.Property<bool>("Revoked")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("text");
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Token")
                         .HasColumnType("text");

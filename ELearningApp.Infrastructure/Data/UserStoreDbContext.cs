@@ -11,5 +11,7 @@ namespace ELearningApp.Infrastructure.Data
             : base(options)
         {
         }
+
+        public new DbSet<User> Users { get; set; }
     }
 }

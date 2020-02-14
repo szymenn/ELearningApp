@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ELearningApp.Infrastructure.Migrations.TokenStoreDb
 {
     [DbContext(typeof(TokenStoreDbContext))]
-    [Migration("20200204170629_InitialSchema")]
+    [Migration("20200213115601_InitialSchema")]
     partial class InitialSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,9 @@ namespace ELearningApp.Infrastructure.Migrations.TokenStoreDb
 
                     b.Property<bool>("Revoked")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Token")
                         .HasColumnType("text");

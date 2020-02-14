@@ -81,6 +81,10 @@ namespace ELearningApp.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
@@ -131,6 +135,8 @@ namespace ELearningApp.Infrastructure.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -211,6 +217,16 @@ namespace ELearningApp.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ELearningApp.Core.Entities.Auth.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

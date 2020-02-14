@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Dtos.InputModels.Auth;
+using ELearningApp.Core.Entities.Auth;
 using ELearningApp.Core.Exceptions;
 using ELearningApp.Core.Helpers;
 using ELearningApp.Core.Interfaces.Repositories.Auth;
@@ -13,16 +14,16 @@ namespace ELearningApp.Infrastructure.Repositories.Auth
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
 
         public UserRepository(
-            UserManager<IdentityUser> userManager,
+            UserManager<User> userManager,
             ITokenService tokenService,
             IEmailService emailService,
-            SignInManager<IdentityUser> signInManager
+            SignInManager<User> signInManager
         )
         {
             _userManager = userManager;
@@ -32,7 +33,7 @@ namespace ELearningApp.Infrastructure.Repositories.Auth
         }
         
         
-        public async Task<EmailResponse> Register(IdentityUser user, string password)
+        public async Task<EmailResponse> Register(User user, string password)
         {
             if (_userManager.Users.Any(u => u.UserName == user.UserName)) 
             {
@@ -49,9 +50,9 @@ namespace ELearningApp.Infrastructure.Repositories.Auth
             return await _emailService.SendEmailAsync(user, confirmationToken);
         }
 
-        public async Task<JsonWebToken> Login(IdentityUser user, string password)
+        public async Task<JsonWebToken> Login(User user, string password)
         {
-            var loginUser = _userManager.Users.FirstOrDefault(u => u.UserName == user.UserName);            
+            var loginUser = _userManager.Users.FirstOrDefault(u => u.UserName == user.UserName && user.Role == u.Role);            
             if (loginUser == null)
             {
                 throw new ResourceNotFoundException(Constants.UserNotFound);
@@ -64,7 +65,7 @@ namespace ELearningApp.Infrastructure.Repositories.Auth
                 throw new LoginException(Constants.LoginFailed);
             }
 
-            return _tokenService.CreateAccessToken(user.UserName, Guid.Parse(user.Id));
+            return _tokenService.CreateAccessToken(user.UserName, Guid.Parse(user.Id), user.Role);
         }
 
         public async Task VerifyEmail(string userId, string emailToken)

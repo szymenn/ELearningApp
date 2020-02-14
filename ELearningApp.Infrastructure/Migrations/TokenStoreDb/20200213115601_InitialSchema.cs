@@ -15,6 +15,7 @@ namespace ELearningApp.Infrastructure.Migrations.TokenStoreDb
                     Token = table.Column<string>(nullable: true),
                     Revoked = table.Column<bool>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
+                    Role = table.Column<int>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
