@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using ELearningApp.Core.Dtos.InputModels.Auth;
+using ELearningApp.Core.Entities.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,7 @@ namespace ELearningApp.Api.Controllers.Auth
             return Ok(new
             {
                 Tokens = await _authService.Login
-                    (_mapper.Map<IdentityUser>(loginModel), loginModel.Password)
+                    (_mapper.Map<User>(loginModel), loginModel.Password)
             });
         }
 
@@ -39,7 +40,7 @@ namespace ELearningApp.Api.Controllers.Auth
             return Ok(new
             {
                 Response = await _authService.Register
-                    (_mapper.Map<IdentityUser>(registerModel), registerModel.Password)
+                    (_mapper.Map<User>(registerModel), registerModel.Password)
             });
         }
 

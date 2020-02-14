@@ -1,6 +1,7 @@
 using AutoMapper;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Dtos.InputModels.Auth;
+using ELearningApp.Core.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
 
 namespace ELearningApp.Api.MapperConfig
@@ -10,8 +11,8 @@ namespace ELearningApp.Api.MapperConfig
         public MappingProfile()
         {
             CreateMap<IdentityUser, UserApiModel>();
-            CreateMap<RegisterInputModel, IdentityUser>();
-            CreateMap<LoginInputModel, IdentityUser>();
+            CreateMap<RegisterInputModel, User>();
+            CreateMap<LoginInputModel, User>();
         }
     }
 }
