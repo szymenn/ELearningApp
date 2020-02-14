@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ELearningApp.Core.Auth.Requirements;
@@ -15,7 +16,9 @@ namespace ELearningApp.Core.Auth.Handlers
                 return Task.CompletedTask;
             }
 
-            if (requirement.Role == RoleEnum.Teacher)
+            var role = context.User.FindFirst
+                (c => c.Type == ClaimTypes.Role && c.Issuer == Constants.ApiUrl).Value;
+            if (role == requirement.Role.ToString())
             {
                 context.Succeed(requirement);
             }

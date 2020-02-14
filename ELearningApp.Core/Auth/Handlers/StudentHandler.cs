@@ -15,7 +15,9 @@ namespace ELearningApp.Core.Auth.Handlers
                 return Task.CompletedTask;
             }
 
-            if (requirement.Role == RoleEnum.Student)
+            var role = context.User.FindFirst
+                (c => c.Type == ClaimTypes.Role && c.Issuer == Constants.ApiUrl).Value;
+            if (role == requirement.Role.ToString())
             {
                 context.Succeed(requirement);
             }
