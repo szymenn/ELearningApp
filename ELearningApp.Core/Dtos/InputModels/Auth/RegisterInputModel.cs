@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using ELearningApp.Core.Helpers;
 
 namespace ELearningApp.Core.Dtos.InputModels.Auth
 {
@@ -19,6 +20,9 @@ namespace ELearningApp.Core.Dtos.InputModels.Auth
         [DataType(DataType.Password)]
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
+        
+        [Required]
+        public RoleEnum Role { get; set; }
         
     }
 }
