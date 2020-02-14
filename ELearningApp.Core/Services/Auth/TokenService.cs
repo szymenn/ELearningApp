@@ -25,19 +25,20 @@ namespace ELearningApp.Core.Services.Auth
             _tokenRepository = tokenRepository;
         }
         
-        public JsonWebToken CreateAccessToken(string userName, Guid userId)
+        public JsonWebToken CreateAccessToken(string userName, Guid userId, RoleEnum role)
         {
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Role, role.ToString()), 
             };
 
             return new JsonWebToken
             {
                 AccessToken = _jwtService.CreateAccessToken(claims),
-                RefreshToken = _refreshTokenService.CreateRefreshToken(userName, userId),
+                RefreshToken = _refreshTokenService.CreateRefreshToken(userName, userId, role),
             };
         }
 

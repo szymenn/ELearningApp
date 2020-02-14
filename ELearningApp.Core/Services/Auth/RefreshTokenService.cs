@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using ELearningApp.Core.Entities;
 using ELearningApp.Core.Entities.Auth;
+using ELearningApp.Core.Helpers;
 using ELearningApp.Core.Interfaces.Repositories.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
 
@@ -16,10 +17,17 @@ namespace ELearningApp.Core.Services.Auth
             _tokenRepository = tokenRepository;
         }
         
-        public string CreateRefreshToken(string userName, Guid userId)
+        public string CreateRefreshToken(string userName, Guid userId, RoleEnum role)
         {
             var refreshToken = CreateRefreshToken();
-            SaveRefreshToken(refreshToken, userName, userId);
+            _tokenRepository.SaveRefreshToken(new RefreshToken
+            {
+                Token = refreshToken,
+                UserName = userName,
+                Role = role,
+                UserId = userId
+            });
+            
             return refreshToken;
         }
 
@@ -29,16 +37,6 @@ namespace ELearningApp.Core.Services.Auth
             return _tokenRepository.UpdateRefreshToken(token, updateToken);
         }
         
-        private void SaveRefreshToken(string token, string userName, Guid userId)
-        {
-            _tokenRepository.SaveRefreshToken(new RefreshToken
-            {
-                Token = token,
-                UserName = userName,
-                UserId = userId
-            });
-        }
-
         private string CreateRefreshToken()
         {
             var randomNumber = new byte[32];
