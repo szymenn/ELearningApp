@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using ELearningApp.Api.Extensions;
 using ELearningApp.Api.MapperConfig;
 using ELearningApp.Core.Auth.Handlers;
 using ELearningApp.Core.Auth.Requirements;
@@ -120,7 +121,11 @@ namespace ELearningApp.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseCustomExceptionHandler();
+            }
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

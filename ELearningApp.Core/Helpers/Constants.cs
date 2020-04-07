@@ -20,6 +20,8 @@ namespace ELearningApp.Core.Helpers
         public const string TokenStoreConnectionString = "TokenStore";
         public const string JwtSettings = "JwtSettings";
         public const string EmailVerificationSettings = "EmailVerificationSettings";
+        public const string InternalServerError = "An unexpected error occured";
+        public const string ApplicationJson = "application/json";
 
     }
 }
