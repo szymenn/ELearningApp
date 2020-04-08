@@ -1,16 +1,14 @@
-using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using ELearningApp.Core.Dtos.InputModels.Auth;
 using ELearningApp.Core.Entities.Auth;
 using ELearningApp.Core.Interfaces.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELearningApp.Api.Controllers.Auth
 {
-    [ApiController, Route("auth"), Authorize]
+    [ApiController, Route("api/[controller]"), Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
