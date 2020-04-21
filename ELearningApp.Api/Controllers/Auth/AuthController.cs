@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ELearningApp.Api.Controllers.Auth
 {
-    [ApiController, Route("api/[controller]"), Authorize]
+    [ApiController, Route("[controller]"), Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -27,7 +27,7 @@ namespace ELearningApp.Api.Controllers.Auth
             return Ok(new
             {
                 Tokens = await _authService.Login
-                    (_mapper.Map<User>(loginModel), loginModel.Password)
+                    (loginModel, loginModel.Password)
             });
         }
 
@@ -38,7 +38,7 @@ namespace ELearningApp.Api.Controllers.Auth
             return Ok(new
             {
                 Response = await _authService.Register
-                    (_mapper.Map<User>(registerModel), registerModel.Password)
+                    (registerModel, registerModel.Password)
             });
         }
 

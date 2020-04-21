@@ -7,26 +7,26 @@ namespace ELearningApp.Core.Services.AmazonS3
 {
     public class BucketService : IBucketService
     {
-        private IBucketRepository _repository;
+        private readonly IBucketRepository _repository;
 
         public BucketService(IBucketRepository repository)
         {
             _repository = repository;
         }
         
-        public Task<PutBucketResponse> PutBucket(string bucketName)
+        public async Task<PutBucketResponse> PutBucket(string bucketName)
         {
-            throw new System.NotImplementedException();
+            return await _repository.PutBucket(bucketName);
         }
 
-        public Task<ListBucketsResponse> GetBuckets()
+        public async Task<ListBucketsResponse> GetBuckets()
         {
-            throw new System.NotImplementedException();
+            return await _repository.GetBuckets();
         }
 
-        public Task<DeleteBucketResponse> DeleteBucket(string bucketName)
+        public async Task<DeleteBucketResponse> DeleteBucket(string bucketName)
         {
-            throw new System.NotImplementedException();
+            return await _repository.DeleteBucket(bucketName);
         }
     }
 }

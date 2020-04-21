@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ELearningApp.Api.Controllers.Files
+namespace ELearningApp.Api.Controllers.AmazonS3
 {
     
     public class FilesController : ControllerBase

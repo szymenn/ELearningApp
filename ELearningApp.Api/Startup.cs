@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Amazon.S3;
 using AutoMapper;
 using ELearningApp.Api.Extensions;
-using ELearningApp.Api.MapperConfig;
 using ELearningApp.Core.Auth.Handlers;
 using ELearningApp.Core.Auth.Requirements;
+using ELearningApp.Core.AutoMapper;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Entities.Auth;
 using ELearningApp.Core.Helpers;
+using ELearningApp.Core.Interfaces.Repositories.AmazonS3;
 using ELearningApp.Core.Interfaces.Repositories.Auth;
+using ELearningApp.Core.Interfaces.Services.AmazonS3;
 using ELearningApp.Core.Interfaces.Services.Auth;
 using ELearningApp.Core.Options;
+using ELearningApp.Core.Services.AmazonS3;
 using ELearningApp.Core.Services.Auth;
 using ELearningApp.Infrastructure.Data;
+using ELearningApp.Infrastructure.Repositories.AmazonS3;
 using ELearningApp.Infrastructure.Repositories.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,14 +56,8 @@ namespace ELearningApp.Api
             services.AddDbContext<TokenStoreDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString(Constants.TokenStoreConnectionString)));
 
-            var mappingConfig = new MapperConfiguration(config =>
-            {
-                config.AddProfile<MappingProfile>();
-            });
-
-            var mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
+            services.AddAutoMapper();
+            
             services.Configure<JwtSettings>(Configuration.GetSection(Constants.JwtSettings));
             services.Configure<EmailVerificationSettings>(
                 Configuration.GetSection(Constants.EmailVerificationSettings));
@@ -70,6 +69,12 @@ namespace ELearningApp.Api
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<IJwtService, JwtService>();
+
+            services.AddScoped<IBucketService, BucketService>();
+            services.AddScoped<IBucketRepository, BucketRepository>();
+            services.AddScoped<IFilesRepository, FilesRepository>();
+            
+            services.AddAWSService<IAmazonS3>(Configuration.GetAWSOptions());
             
             services.AddIdentity<User, IdentityRole>(options =>
                 {

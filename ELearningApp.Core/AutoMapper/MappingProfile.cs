@@ -4,7 +4,7 @@ using ELearningApp.Core.Dtos.InputModels.Auth;
 using ELearningApp.Core.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
 
-namespace ELearningApp.Api.MapperConfig
+namespace ELearningApp.Core.AutoMapper
 {
     public class MappingProfile : Profile
     {

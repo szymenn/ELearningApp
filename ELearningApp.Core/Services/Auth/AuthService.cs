@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using ELearningApp.Core.Dtos.ApiModels.Auth;
 using ELearningApp.Core.Dtos.InputModels.Auth;
 using ELearningApp.Core.Entities.Auth;
@@ -13,21 +14,28 @@ namespace ELearningApp.Core.Services.Auth
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AuthService(IUserRepository userRepository, ITokenService tokenService)
+        public AuthService(IUserRepository userRepository, ITokenService tokenService, IMapper mapper)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
         
-        public async Task<JsonWebToken> Login(User user, string password)
-        {
-            return await _userRepository.Login(user, password);
-        }
-
         public async Task<EmailResponse> Register(User user, string password)
         {
             return await _userRepository.Register(user, password);
+        }
+
+        public async Task<JsonWebToken> Login(LoginInputModel loginModel, string password)
+        {
+            return await _userRepository.Login(_mapper.Map<User>(loginModel), password);
+        }
+
+        public async Task<EmailResponse> Register(RegisterInputModel registerModel, string password)
+        {
+            return await _userRepository.Register(_mapper.Map<User>(registerModel), password);
         }
 
         public async Task VerifyEmail(string userId, string emailToken)
