@@ -72,7 +72,7 @@ namespace ELearningApp.Api
 
             services.AddScoped<IBucketService, BucketService>();
             services.AddScoped<IBucketRepository, BucketRepository>();
-            services.AddScoped<IFilesRepository, FilesRepository>();
+            services.AddScoped<IFileRepository, FileRepository>();
             
             services.AddAWSService<IAmazonS3>(Configuration.GetAWSOptions());
             
